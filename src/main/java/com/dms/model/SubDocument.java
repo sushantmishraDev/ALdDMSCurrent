@@ -62,6 +62,10 @@ public class SubDocument {
 	@Column (name="sd_party")
 	private String sd_party;
 	
+	@Column (name="sd_olr_no")
+	private Integer sd_olr_no;
+	
+	
 	@Column (name="sd_description")
 	private String sd_description;
 	
@@ -71,6 +75,11 @@ public class SubDocument {
 	@Column (name = "sd_cr_by")
 	private Long sd_cr_by;
 	
+	@Column (name="sd_olr_year")
+	private Integer sd_olr_year;
+	
+	
+
 	@Column (name = "sd_cr_date")
 	private Date sd_cr_date;
 	
@@ -116,10 +125,28 @@ public class SubDocument {
 	
 	
 	
+	public Integer getSd_olr_year() {
+		return sd_olr_year;
+	}
+
+	public void setSd_olr_year(Integer sd_olr_year) {
+		this.sd_olr_year = sd_olr_year;
+	}
+	
 	
 	public boolean isCheckBoxValue() {
 		return checkBoxValue;
 	}
+	
+	
+	public Integer getSd_olr_no() {
+		return sd_olr_no;
+	}
+
+	public void setSd_olr_no(Integer sd_olr_no) {
+		this.sd_olr_no = sd_olr_no;
+	}
+
 
 	public void setCheckBoxValue(boolean checkBoxValue) {
 		this.checkBoxValue = checkBoxValue;

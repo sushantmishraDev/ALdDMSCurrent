@@ -1,6 +1,52 @@
 var EDMSApp = angular.module("EDMSApp", ['ngFileUpload','ngMask','ui.bootstrap']);
 
-EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function ($scope, $http,$sce,Upload) {
+
+EDMSApp.directive ("select2", function ($timeout, $parse) {
+	  return {
+	    restrict: 'AC',
+	    require: 'ngModel',
+	    link: function(scope, element, attrs) {
+	      console.log(attrs);
+	      $timeout(function() {
+	        element.select2();
+	        
+	        element.select2Initialized = true;
+	      });
+
+	      var refreshSelect = function() {
+	        if (!element.select2Initialized) return;
+	        $timeout(function() {
+	          element.trigger('change');
+	        });
+	      };
+	      
+	      var recreateSelect = function () {
+	        if (!element.select2Initialized) return;
+	        $timeout(function() {
+	          element.select2('destroy');
+	          element.select2();
+	        });
+	      };
+
+	      scope.$watch(attrs.ngModel, refreshSelect);
+
+	      if (attrs.ngOptions) {
+	        var list = attrs.ngOptions.match(/ in ([^ ]*)/)[1];
+	        // watch for option list changel
+	        scope.$watch(list, recreateSelect);
+	      }
+
+	      if (attrs.ngDisabled) {
+	        scope.$watch(attrs.ngDisabled, refreshSelect);
+	      }
+	    }
+	  };
+	});
+
+
+
+
+EDMSApp.controller('BenchController',['$scope','$http','Upload',function ($scope, $http,Upload) {
 	  var urlBase="/dms/";
 	  $scope.picFile='';
 	  $scope.caseTypes=[];
@@ -13,6 +59,7 @@ EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function 
 	  getIndexFields();
 	  getMasterdata();
 	  $scope.courtList =[];
+	  $scope.causeListTypes =[];
 	  
 	  $scope.court={};
 	  
@@ -119,6 +166,7 @@ EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function 
 		  console.log("dataaaaaaaaaaaaaaaa",content);
 		  $scope.court=content;
 		  $scope.showLoader =true;
+		  $('#next_Modal').modal('hide');
 		  
 		  var response = $http.post(urlBase+'bench/supplimentryCourt',$scope.court);		 
 			response.success(function(data, status, headers, config) {					
@@ -143,6 +191,7 @@ EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function 
 		  console.log("dataaaaaaaaaaaaaaaa",content);
 		  $scope.court=content;
 		  $scope.showLoader =true;
+		  $('#next_Modal').modal('hide');
 		  
 		  var response = $http.post(urlBase+'bench/transferCourt',$scope.court);		 
 			response.success(function(data, status, headers, config) {					
@@ -162,6 +211,96 @@ EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function 
 	          
 		
 	 }
+	  
+	  $scope.nextCause = function(masterentity) {
+	    	console.log(masterentity);
+	    	
+	    	 
+			  console.log("dataaaaaaaaaaaaaaaa",content);
+			  $scope.court=masterentity;
+			  $scope.showLoader =true;
+			  $('#next_Modal').modal('hide');
+			  
+			  var response = $http.post(urlBase+'bench/nextDayGen',$scope.court);		 
+				response.success(function(data, status, headers, config) {					
+					if(data.response=="FALSE"){					
+						alert("Kuch Nhi Utha");
+					}
+					
+					if(data.response=="TRUE"){					
+						alert("CHAL GAYI");
+					}
+					 $scope.showLoader =false;
+					
+			});
+			response.error(function(data, status, headers, config) {
+				alert( "Error");
+			});
+		          
+			
+		 
+	    }
+	  
+	  $scope.nextTrans = function(masterentity) {
+	    	console.log(masterentity);
+	    	
+	    	 
+			  console.log("dataaaaaaaaaaaaaaaa",content);
+			  $scope.court=masterentity;
+			  $scope.showLoader =true;
+			  $('#next_Modal').modal('hide');
+			  
+			  var response = $http.post(urlBase+'bench/nextTrans',$scope.court);		 
+				response.success(function(data, status, headers, config) {					
+					if(data.response=="FALSE"){					
+						alert("Kuch Nhi Utha");
+					}
+					
+					if(data.response=="TRUE"){					
+						alert("CHAL GAYI");
+					}
+					 $scope.showLoader =false;
+					
+			});
+			response.error(function(data, status, headers, config) {
+				alert( "Error");
+			});
+		          
+			
+		 
+	    }
+	  
+	  $scope.nextCorrection = function(masterentity) {
+	    	console.log(masterentity);
+	    	
+	    	 
+			  console.log("dataaaaaaaaaaaaaaaa",content);
+			  $scope.court=masterentity;
+			  $scope.showLoader =true;
+			  
+			  $('#next_Modal').modal('hide');
+			  
+			  var response = $http.post(urlBase+'bench/nextCorrection',$scope.court);		 
+				response.success(function(data, status, headers, config) {					
+					if(data.response=="FALSE"){					
+						alert("Kuch Nhi Utha");
+					}
+					
+					if(data.response=="TRUE"){					
+						alert("CHAL GAYI");
+					}
+					 $scope.showLoader =false;
+					
+			});
+			response.error(function(data, status, headers, config) {
+				alert( "Error");
+			});
+		          
+			
+		 
+	    }
+	  
+	  
 	  
 	  $scope.correctionIaToday = function(content) { 
 		  console.log("dataaaaaaaaaaaaaaaa",content);
@@ -203,6 +342,42 @@ EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function 
 		      	console.log("Error in getting casetypes");
 		      });
 	  }
+	  
+	  $scope.setMasterdata = function(masterentity) {
+			$scope.masterentity = angular.copy(masterentity);
+		};
+		
+		$scope.tansFlag=false;
+		  $scope.setMasterdataTrans = function(masterentity) {
+				$scope.masterentity = angular.copy(masterentity);
+				$scope.masterentity.clDate=new Date();
+				$scope.tansFlag=true;
+				 getCauseListTypes("trans");
+			};
+			
+			$scope.suppFlag=false;
+			  $scope.setMasterdataSupp = function(masterentity) {
+					$scope.masterentity = angular.copy(masterentity);
+					$scope.masterentity.clDate=new Date();
+					$scope.suppFlag=true;
+					 getCauseListTypes("supp");
+				};
+				
+				function getCauseListTypes(type) {
+					var response = $http.post(urlBase+'bench/getCauseListTypes',type);
+					response.success(function(data, status, headers, config) {
+						$scope.causeListTypes = data.modelList;
+					});
+					console.log($scope.causeListTypes);
+					response.error(function(data, status, headers, config) {
+						alert("Error");
+					});
+
+				}
+				
+				
+		
+		
 	  
 	  getAllCourts();
 	  
@@ -829,6 +1004,50 @@ EDMSApp.controller('BenchController',['$scope','$http','$sce','Upload',function 
 				});	
 				//}
 				};	
+				
+				//========================== Vijay chaurasiya ==================//
+				
+				$scope.isMoving = false;
+
+				$scope.moveApplication = function () {
+
+				    if ($scope.isMoving) return; // prevent double click
+
+				    $scope.isMoving = true;
+				    console.log("======== move application =======");
+
+					$http.post(urlBase + 'application/moveApplications')
+					.then(function (response) {
+
+					    $scope.isMoving = false;
+
+					    let data = response.data;
+
+					    if (data.success > 0) {
+					        alert("Success: " + data.success);
+					    } else {
+					        alert("No applications moved (Total: " + data.total + ")");
+					    }
+
+					})
+					.catch(function (error) {
+					    $scope.isMoving = false;
+					    alert("Error: " + error.status);
+					});
+				};
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 			
 	  //
 	  /*END*/  

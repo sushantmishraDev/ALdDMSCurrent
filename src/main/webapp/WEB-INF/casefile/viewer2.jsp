@@ -1,15 +1,18 @@
 	
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/viewer.css" />
+	
+	<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/debugger.css" />
 
 <!-- This snippet is used in production (included from viewer.html) -->
 <link rel="resource" type="application/l10n"
 	href="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/locale/locale.properties" />
-<script src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/build/pdf.js?v=1"></script>
+<script src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/build/pdf.js"></script>
 <script
 	src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/debugger.js"></script>
 <script
-	src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/viewer.js"></script>
+	src="${pageContext.request.contextPath}/js/pdfjs-3.4.120/web/viewer.js?v=3"></script>
 
 <div tabindex="1" class="viewOnLoad" style="height: 450px; ">
     <div id="outerContainer">
@@ -208,7 +211,7 @@
           </div>
         </div>  <!-- secondaryToolbar -->
 
-        <div class="toolbar" >
+        <div class="toolbar" id ="pdfToolBar"  style ="top:50.2px; position:sticky; z-index: 5;">
           <div id="toolbarContainer">
             <div id="toolbarViewer">
               <div id="toolbarViewerLeft">
@@ -299,8 +302,8 @@
           </div>
         </div>
 
-        <div id="viewerContainer" tabindex="0" style="height: 900px;">
-          <div id="viewer" class="pdfViewer"></div>
+        <div id="viewerContainer" tabindex="0" style="height: 1000px;top: 35px;">
+          <div id="viewer" class="pdfViewer" style="top:150.2px;"></div>
         </div>
       </div> <!-- mainContainer -->
 

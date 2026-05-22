@@ -1,15 +1,15 @@
 package com.dms.controller;
 
-import java.io.File;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dms.model.ActionResponse;
-import com.dms.model.CaseFileDetail;
+import com.dms.model.DigitizationRequest;
 import com.dms.model.DownloadFile;
 import com.dms.model.DownloadReport;
-import com.dms.model.Lookup;
-import com.dms.model.SubDocument;
 import com.dms.service.CaseFileDetailService;
+import com.dms.service.CommonReportsService;
 import com.dms.service.DownloadFileService;
 import com.dms.service.LookupService;
 import com.dms.service.SubDocumentService;
@@ -35,6 +34,9 @@ public class ReportController {
 	
 	@Autowired
 	private LookupService lookupService;
+	
+	@Autowired
+	private CommonReportsService commonReportsService;
 	
 	@Autowired
 	private SubDocumentService subDocumentService;
@@ -89,6 +91,40 @@ public class ReportController {
 
 		return jsonData;
 	}
+	
+	
+
+	//================ Vijay Chaurasiya ===========================	
+	
+	  @RequestMapping(value = "/movePdmsToDmsReports", method = RequestMethod.GET)
+		public String getMovePdmsToDmsReport() {
+			return "/reports/movePdmsToDmsReports";
+		}
+		
+		@RequestMapping(value = "/getMovePdmsToDmsReports", method = RequestMethod.GET)
+		@ResponseBody
+		public List<DigitizationRequest> getRequests(
+
+		        @RequestParam("startDate")
+		        @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+
+		        @RequestParam("endDate")
+		        @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+
+		    try {
+		        // logging only
+		        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		        System.out.println("=========Start Date: " + sdf.format(startDate));
+		        System.out.println("End Date  : " + sdf.format(endDate));
+
+		        return commonReportsService
+		                .getDigitizationRequestsByDateRange(startDate, endDate);
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        return new ArrayList<DigitizationRequest>();
+		    }
+		}
 
 	
 	

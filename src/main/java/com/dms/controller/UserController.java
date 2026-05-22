@@ -301,6 +301,7 @@ public class UserController {
 			List<Long> ut = new ArrayList<Long>();
 
 			ut = temp_um.getUm_ct_id();
+			if(ut.size()>0) {
 			for (int i = 0; i < ut.size(); i++) {
 				System.out.println(ut.get(i));
 				uct.setUcm_um_mid(um.getUm_id());
@@ -311,6 +312,7 @@ public class UserController {
 			um=userservice.getUser(um.getUm_id());
 			response.setModelData(um);
 		}	
+		}
 		jsonData = globalfunction.convert_to_json(response);
 
 		return jsonData;

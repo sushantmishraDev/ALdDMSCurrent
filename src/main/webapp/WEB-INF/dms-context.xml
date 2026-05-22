@@ -136,6 +136,13 @@
         <property name="password" value="edms123"/>
 	</bean>
 	
+	<!--  <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource">
+     	<property name="driverClassName" value="org.postgresql.Driver"/>
+      	<property name="url" value="jdbc:postgresql://10.0.0.62:5432/edms?charSet=LATIN1"/> 
+      	<property name="username" value="postgres"/> 
+        <property name="password" value="postgres"/>
+	</bean> -->
+	
 	<bean class="org.apache.commons.dbcp.BasicDataSource" id="eFilingDataSource">
      	<property name="driverClassName" value="org.postgresql.Driver"/>
       	<property name="url" value="jdbc:postgresql://192.168.0.160:5432/efiling?charSet=LATIN1"/> 

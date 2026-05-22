@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -682,8 +680,48 @@ public class CaseFileDetailService {
 		return rd;
 	}
 
+	
+	@Transactional
+	public CaseFileDetail getCaseFileByCaseTypeNoYear(Long caseType,String caseNo,Integer caseYear) 
+	{
+		System.out.println("caseType "+caseType+" caseNo "+caseNo+" caseYear "+caseYear);
+		CaseFileDetail result=new CaseFileDetail();
+		try {
+			result = (CaseFileDetail) em.createQuery("SELECT cfd FROM CaseFileDetail cfd WHERE cfd.fd_case_type="+caseType+" and cfd.fd_case_no = '"+caseNo+"' and cfd.fd_case_year="+caseYear+" and cfd.fd_rec_status = 1").getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	
+	//=============================================================================
+	public Petitioner getPetitionerByFdId(Long id) {
+		// TODO Auto-generated method stub
+		Petitioner pet=null;
+		try {
+			pet=(Petitioner) em.createQuery("SELECT pet from Petitioner pet where pet.pt_fd_mid=:id").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pet;
+	}
+	
+	
+	public Respondent getRespondentByFdId(Long id) {
+		// TODO Auto-generated method stub
+		Respondent ret=null;
+		try {
+			ret=(Respondent) em.createQuery("SELECT ret from Respondent ret where ret.rt_fd_mid=:id").setParameter("id", id).getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
+	}
+
 
 		
 	

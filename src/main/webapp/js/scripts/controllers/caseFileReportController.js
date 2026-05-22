@@ -564,5 +564,43 @@ EDMSApp.controller('caseFileReportController',['$scope', '$http' ,'$q','$filter'
 			});
 
 			};
+			
+			
+			
+			
+			
+			/*===================== Vijay Chaurasiya ======================================*/
+				
+				$scope.getPDMSToDMSReport = function() {
+
+					var start = $filter('date')($scope.startDate, 'yyyy-MM-dd');
+					var end = $filter('date')($scope.endDate, 'yyyy-MM-dd');
+
+
+					console.log("Start Date:", start, "End Date:", end);
+
+					var response = $http.get(urlBase + 'reports/getMovePdmsToDmsReports', {
+						params: {
+							startDate: start,
+							endDate: end
+						}
+					});
+
+					response.success(function(data) {
+						console.log(data);
+						$scope.requests = data;
+					});
+
+					response.error(function(error) {
+						console.error('Error:', error);
+					});
+				};
+							
+			
+			
+			
+			
+			
+			
 
 }]);

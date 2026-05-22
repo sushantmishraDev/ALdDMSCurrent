@@ -38,7 +38,7 @@ import javax.xml.bind.ValidationException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -61,7 +61,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.dms.model.ActionResponse;
 import com.dms.model.ApplicationTypes;
-import com.efiling.model.ApplicationCheckListMapping;
 import com.dms.model.ApplicationWithPetition;
 import com.dms.model.CaseFileDetail;
 import com.dms.model.CaseLkoToAldHistory;
@@ -73,6 +72,7 @@ import com.dms.model.CauseListHistory;
 import com.dms.model.CauseListType;
 import com.dms.model.CourtMaster;
 import com.dms.model.CourtUserMapping;
+import com.dms.model.DigitizationRequest;
 import com.dms.model.DownloadFile;
 import com.dms.model.DownloadModel;
 import com.dms.model.DownloadReport;
@@ -84,7 +84,6 @@ import com.dms.model.Lookup;
 import com.dms.model.MediationDocs;
 import com.dms.model.MetaData;
 import com.dms.model.Notes;
-import com.dms.model.OderFromElegalixList;
 import com.dms.model.OrderFromElegalix;
 import com.dms.model.OrderReport;
 import com.dms.model.OrderReportSub;
@@ -101,6 +100,7 @@ import com.dms.service.CaseFileDetailService;
 import com.dms.service.CaseNominatedService;
 import com.dms.service.CasetypeService;
 import com.dms.service.CauseListService;
+import com.dms.service.CommonReportsService;
 import com.dms.service.CourtMasterService;
 import com.dms.service.DownloadFileService;
 import com.dms.service.LKOMasterService;
@@ -111,6 +111,7 @@ import com.dms.service.SubDocumentService;
 import com.dms.service.UserService;
 import com.dms.utility.GlobalFunction;
 import com.dms.utility.PDFMerger;
+import com.efiling.model.ApplicationCheckListMapping;
 import com.efiling.model.EfilingApplication;
 import com.efiling.model.EfilingCaseFileDetail;
 import com.efiling.service.AddCaseEfilingService;
@@ -135,6 +136,8 @@ public class CaseFileController {
 	@Autowired
 	ServletContext context;
 	
+	@Autowired
+	private CommonReportsService commonReportService;
 	
 	
 	@Autowired
@@ -2255,7 +2258,7 @@ public class CaseFileController {
 				 		 
 				 		subDocuments.add(sb);
 				 		 
-				 		 
+				 		downloadFile(sb.getJudgmentID(), uploadPath);
 				 		  
 				 	   }
 				    }
@@ -2627,7 +2630,7 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 				 		 
 				 		subDocuments.add(sb);
 				 		 
-				 		 
+				 		downloadFile(sb.getJudgmentID(), uploadPath);
 				 		  
 				 	   }
 				    }
@@ -2799,13 +2802,13 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 			Lookup lookupRepo = lookupService.getLookUpObject("REPOSITORYPATH");
 			
 			
-			/*String srcPath = lookupRepo.getLk_longname() + File.separator
+			String srcPath = lookupRepo.getLk_longname() + File.separator
 					+ caseFileDetail.getCaseType().getCt_label()
-					+ File.separator ;*/
+					+ File.separator ;
 			
-			String srcPath = "D:\\Allahabad High Court\\Allahabad" + File.separator
+		/*	String srcPath = "D:\\Allahabad High Court\\Allahabad" + File.separator
 			+ caseFileDetail.getCaseType().getCt_label()
-			+ File.separator ;
+			+ File.separator ;*/
 			
 			String fileName=null;
 			
@@ -2833,7 +2836,9 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 
 			File source = new File(srcPath);
 			
-			/*File source = new File("C:\\Users\\Alok\\Pictures\\WRIC149172020_PETN_1.pdf");*/
+			/*File source = new File("C:\\Users\\Alok\\Documents\\WRIC323162025_PETN_1.pdf");*/
+			
+			/*File source = new File("C:\\Users\\Alok\\Pictures\\stamp rept\\WTAX43662025_PETN_1.pdf");*/
 
 			String uploadPath = context.getRealPath("");
 			File dest = new File(uploadPath + File.separator + "uploads"
@@ -2852,6 +2857,91 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 		}
 		
 		return returnview;
+	}
+	
+	@RequestMapping(value = "/getNextnPrevious", method = RequestMethod.POST)
+	public @ResponseBody String getNextnPrevious(@RequestBody CauseList causeList, HttpSession session) 
+	{
+		
+		
+
+		Integer cl_temp =causeList.getCl_serial_no();
+		String jsonData = null;
+		ActionResponse<CauseList> response=new ActionResponse<>();
+		User u=(User) session.getAttribute("USER");
+		
+		boolean nextCase =false;
+		boolean previousCase =false;
+		CauseList  clNext =null;
+		CauseList  clPrevious =null;
+	
+		////////next
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+		clNext=causeListService.getNextCase(causeList);
+
+if(clNext != null) {
+	
+	if(clNext.getCl_fd_mid() != null) {
+		// confirm case exists with fd_id
+		nextCase= true;
+	}
+}
+
+causeList.setCl_serial_no(cl_temp);
+
+
+
+	
+		
+		//////////next
+
+
+///////////////// previous
+
+
+
+clPrevious=causeListService.getPreviousCase(causeList);
+ 
+ if(clPrevious != null) {
+		
+		if(clPrevious.getCl_fd_mid() != null) {
+			// confirm case exists with fd_id
+			previousCase= true;
+		}
+	}
+
+
+
+
+
+
+
+/////////previous
+		
+		
+		
+		
+			response.setModelData(clNext);
+			response.setData(clPrevious);
+			response.setResponse("TRUE");
+		//response.setData("Record saved successfully");
+		
+			
+		jsonData = globalfunction.convert_to_json(response);
+		return jsonData;
+			
+	
 	}
 	
 	
@@ -2916,99 +3006,7 @@ else if(subDocuments.get(i - 1).getSd_document_id() != null) {
 	Integer maxSerial=causeListService.getMaxSerial(cl);*/
 	//List<Integer> serials=causeListService.getSerialAvailbaleCases(cl);
 	
-	if(nPflag.equals("P") || nPflag.equals("N")) {
-		
 	
-	
-	
-	
-	
-	
-	
-
-
-		clNext=causeListService.getNextCase(cl);
-
-if(clNext != null) {
-	
-	if(clNext.getCl_fd_mid() != null) {
-		// confirm case exists with fd_id
-		nextCase= true;
-	}
-}
-
-
-if(clNext == null || !nextCase) {
-	List<CauseList> clList =causeListService.getListForNextCase(cl);
-	
-	
-	// jump to next existing case
-	//causeListService.getByFDmid(cl.getCl_fd_mid());
-	
-	
-	
-	for(CauseList cal :clList) {
-		
-		if(cal.getCl_serial_no() > cl.getCl_serial_no()) {
-			//  we get the next serial no
-			
-			if(cal.getCl_fd_mid() != null) {
-				
-				// get connected for next case 
-				List<CauseList> ca2  =causeListService.getListConnectedForNextCase(cal);
-				
-				if(ca2 != null) {
-					clNext =ca2.get(0);
-					break;
-				}
-				
-				//clNext =cal;
-		
-			}
-		}
-		
-	}
-}
-	}
-	if(nPflag.equals("P") || nPflag.equals("N")) {
-		
-		cl.setCl_serial_no(cl_temp);
-		clPrevious=causeListService.getPreviousCase(cl);
-		 
-		 if(clPrevious != null) {
-				
-				if(clPrevious.getCl_fd_mid() != null) {
-					// confirm case exists with fd_id
-					previousCase= true;
-				}
-			}
-
-
-			if(clPrevious == null || !previousCase) {
-				List<CauseList> clList =causeListService.getListForPreviousCase(cl);
-				
-				
-				
-				
-				for(CauseList cal :clList) {
-					
-					if(cal.getCl_serial_no() < cl.getCl_serial_no()) {
-						//  we get the next serial no
-						
-						if(cal.getCl_fd_mid() != null) {
-							
-							List<CauseList> ca2 =	causeListService.getListConnectedForPriviousCase(cal);
-						if(ca2 != null) {
-							clPrevious =ca2.get(0);
-						break;
-						}
-						}
-					}
-					
-				}
-			}
-		
-	}
 
 	
 	System.out.println("cl daaaaaaaa"+cl_dol1);
@@ -3042,28 +3040,7 @@ if(clNext == null || !nextCase) {
 			
 			
 			
-			if(clNext != null) {
-			model.addAttribute("cl_court_no", clNext.getCl_court_no());
-			model.addAttribute("cl_rec_status", clNext.getCl_rec_status());
-			model.addAttribute("cl_serial_no", clNext.getCl_serial_no());
-			model.addAttribute("cl_list_type_mid", clNext.getCl_list_type_mid());
 			
-			Long cldate =clNext.getCl_dol().getTime();
-			model.addAttribute("cl_dol", cldate);
-			model.addAttribute("cl_fd_mid", clNext.getCl_fd_mid());
-			}
-			
-			if(clPrevious != null) {
-				model.addAttribute("cl_court_no1", clPrevious.getCl_court_no());
-				model.addAttribute("cl_rec_status1", clPrevious.getCl_rec_status());
-				model.addAttribute("cl_serial_no1", clPrevious.getCl_serial_no());
-				model.addAttribute("cl_list_type_mid1", clPrevious.getCl_list_type_mid());
-				
-				
-				Long cldate =clPrevious.getCl_dol().getTime();
-				model.addAttribute("cl_dol1", cldate);
-				model.addAttribute("cl_fd_mid1", clPrevious.getCl_fd_mid());
-				}
 			
 			model.addAttribute("cl_serial_noCurrent", cl_temp);
 			model.addAttribute("doc_id", docId);
@@ -5857,6 +5834,8 @@ else {
 				 		 sb.setSubApplications(new ArrayList<SubApplication>());
 				 		 
 				 		subDocuments.add(sb);
+				 		
+				 		downloadFile(sb.getJudgmentID(), uploadPath);
 				 		 
 				 		 
 				 		  
@@ -5977,6 +5956,7 @@ else {
 				 		 
 				 		subDocuments.add(sb);
 				 		 
+				 		downloadFile(sb.getJudgmentID(), uploadPath);
 				 		 
 				 		  
 				 	   }
@@ -7072,6 +7052,7 @@ else {
 		//Notes prenot = subDocumentService.getNote(l);
 		
 		Judge judge = courtMasterService.getJudgeByCourtMappingUmid(user.getUm_id());
+		JudgeName jn= courtMasterService.getJudgeNameByCourtMappingUmid(user.getUm_id());
 		/*Notes prenot = subDocumentService.getNote(fdid,judge.getJg_id());*/
 		Notes prenot = subDocumentService.getNote(fdid);
 		System.out.println("== Note==id "+prenot);
@@ -7084,7 +7065,8 @@ else {
 			nt.setNt_notes(Note.getNt_notes());
 			nt.setNt_cr_date(new Date());
 			//nt.setNt_cr_by(user.getUm_id());
-			nt.setNt_cr_by(judge.getJg_id());
+			/*nt.setNt_cr_by(judge.getJg_id());*/
+			nt.setNt_cr_by(jn.getJn_id());
 			subDocumentService.saveNote(nt);
 			response.setResponse("TRUE");
 			
@@ -7093,7 +7075,7 @@ else {
 		{
 			Note.setNt_notes(Note.getNt_notes());
 			Note.setNt_mod_date(new Date());
-			int flag=subDocumentService.updateNote(Note,judge.getJg_id());
+			int flag=subDocumentService.updateNote(Note,jn.getJn_id());
 			if(flag==1) {
 				response.setResponse("TRUE");				
 			}
@@ -7140,7 +7122,10 @@ else {
 				List<JudgeName> judge = courtMasterService.getJudgeByECourtMappingUmid(user.getCourtMaster().getCm_bench_id());
 			
 			/*Notes notedata = subDocumentService.getNote(fd_id,judge.getJn_id());*/
-				Notes notedata = subDocumentService.getNote(fd_id);
+				
+				Notes notedata = subDocumentService.getNote1(fd_id,judge);
+				
+				/*Notes notedata = subDocumentService.getNote(fd_id);*/
 			
 			response.setResponse("TRUE");
 			response.setModelData(notedata);
@@ -7462,7 +7447,124 @@ else {
 			jsonData = globalfunction.convert_to_json(response);
 			return jsonData;
 		}
-		/*Pankaj   _______________END*/
+		
+		
+		
+		
+		//======================================== VIJAY CHAURASIYA  START FROM HERE========================================
+		
+		@RequestMapping(value = "/getpetitionerByFdId/{fdId}", method = RequestMethod.GET)
+		public @ResponseBody String getPetitionerByFd(@PathVariable("fdId") Long fdId) {
+
+		    ActionResponse<Petitioner> response = new ActionResponse<>();
+		    String jsonData = null;
+
+		    try {
+		        Petitioner pet = caseFileDetailService.getPetitionerByFdId(fdId);
+
+		        response.setResponse("TRUE");
+		        response.setData(pet);
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        response.setResponse("FALSE");
+		    }
+
+		    jsonData = globalfunction.convert_to_json(response);
+		    return jsonData;
+		}
+		
+		@RequestMapping(value = "/savepetitioner", method = RequestMethod.POST)
+		public @ResponseBody String savePetitioner(@RequestBody Petitioner pet,
+		                                           HttpSession session) {
+
+		    ActionResponse<Petitioner> response = new ActionResponse<>();
+		    String jsonData = null;
+
+		    try {
+		        User u = (User) session.getAttribute("USER");
+
+		        // Set required fields
+		        pet.setPt_rec_status(1);
+		        pet.setPt_cr_by(u.getUm_id());
+		        pet.setPt_cr_date(new Date());
+
+		        // Save
+		        caseFileDetailService.save(pet);
+
+		        response.setResponse("TRUE");
+		        response.setData(pet);
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        response.setResponse("FALSE");
+		    }
+
+		    jsonData = globalfunction.convert_to_json(response);
+		    return jsonData;
+		}
+		
+		@RequestMapping(value = "/saverespondent", method = RequestMethod.POST)
+		public @ResponseBody String saveRespondent(@RequestBody Respondent res,
+		                                           HttpSession session) {
+
+		    ActionResponse<Respondent> response = new ActionResponse<>();
+		    String jsonData = null;
+
+		    try {
+		        User u = (User) session.getAttribute("USER");
+
+		        //  Set required fields
+		        res.setRt_rec_status(1);
+		        res.setRt_cr_by(u.getUm_id());
+		        res.setRt_cr_date(new Date());
+
+		        // Save
+		        caseFileDetailService.save(res);
+
+		        response.setResponse("TRUE");
+		        response.setData(res);
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        response.setResponse("FALSE");
+		    }
+
+		    jsonData = globalfunction.convert_to_json(response);
+		    return jsonData;
+		}
+		
+		
+		@RequestMapping(value = "/getrespondentByFdId/{id}", method = RequestMethod.GET)
+		public @ResponseBody String getRespondent(@PathVariable("id") Long id) {
+
+		    ActionResponse<Respondent> response = new ActionResponse<>();
+		    String jsonData = null;
+
+		    try {
+		        Respondent res = caseFileDetailService.getRespondentByFdId(id);
+
+		        response.setResponse("TRUE");
+		        response.setData(res);
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        response.setResponse("FALSE");
+		    }
+
+		    jsonData = globalfunction.convert_to_json(response);
+		    return jsonData;
+		}
+		
+		
+		
+		//========================================================================================================
+			//======================================== VIJAY CHAURASIYA  END WITH ========================================
+			
+		
+		
+
+	
 		
 		
 }

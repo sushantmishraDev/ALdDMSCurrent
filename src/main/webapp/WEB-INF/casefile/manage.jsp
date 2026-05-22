@@ -1,5 +1,13 @@
 <%@ include file="../content/header2.jsp"%>
+
+
     <html>
+
+<head>
+   <link rel='stylesheet' href='${pageContext.request.contextPath}/css/globalStyle.css' type='text/css' />
+
+</head>
+
 
     <body>
         <div id="content" class="content">
@@ -61,37 +69,38 @@
                                             <td align="center">{{dmsCaseData.status}}</td>
                                             <td>
                                                 <% if(role.equals("DMSAdmin") || role.equals("Ecourt_Team")) {%>
-                                                    <button class="btn btn-success btn-sm" ng-click="viewCaseFile(row.fd_id)">View</button>
-                                                    <button class="btn btn-success btn-sm" ng-click="viewDetail(row.fd_id)">View Detail</button>
-                                                    <button class="btn btn-success btn-sm" ng-click="downloadFiles(row.fd_id)">Download</button>
+                                                    <button class="btn-ui btn-primary-ui" ng-click="viewCaseFile(row.fd_id)">View</button>
+                                                    <button class="btn-ui btn-purple-ui" ng-click="viewDetail(row.fd_id)">View Detail</button>
+                                                    <button class="btn-ui btn-info-ui" ng-click="downloadFiles(row.fd_id)">Download</button>
 
-                                                    <button class="btn btn-success btn-sm" ng-click="setModel(row)" data-toggle="modal" data-target="#updateCaseType">Change Case Type</button>
-                                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" ng-click="setModel(row)" data-target="#uploadDocument">Upload</button>
-                                                      <button class="btn btn-success btn-sm" ng-click="searchreport(row.fd_id)">Office Reports</button>
+                                                    <button class="btn-ui btn-primary-ui" ng-click="setModel(row)" data-toggle="modal" data-target="#updateCaseType">Change Case Type</button>
+                                                    <button type="button" class="btn-ui btn-purple-ui" data-toggle="modal" ng-click="setModel(row)" data-target="#uploadDocument">Upload</button>
+                                                      <button class="btn-ui btn-info-ui" ng-click="searchreport(row.fd_id)">Office Reports</button>
 
-                                                    <button class="btn btn-success btn-sm" ng-click="setModel(row)" data-toggle="modal" data-target="#caseAssignTo">Assign To</button>
-                                                    <button class="btn btn-success btn-sm" ng-click="setModel(row)" data-toggle="modal"  data-target="#addcaseefiling">AddCaseToEfiling</button>
+                                                    <button class="btn-ui btn-primary-ui" ng-click="setModel(row)" data-toggle="modal" data-target="#caseAssignTo">Assign To</button>
+                                                    <button class="btn-ui btn-purple-ui" ng-click="setModel(row)" data-toggle="modal"  data-target="#addcaseefiling">AddCaseToEfiling</button>
+                                                      <button class="btn-ui btn-info-ui" ng-click="addPartyName(row.fd_id)">Add Party</button>
                                                     <% }%>
 
                                                         <% if(role.equals("Review_Officer") || role.equals("Assistant Review Officer")) {%>
-                                                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" ng-click="setModel(row)" data-target="#uploadDocument">Upload
+                                                            <button type="button" class="btn-ui btn-primary-ui" data-toggle="modal" ng-click="setModel(row)" data-target="#uploadDocument">Upload
                                                             </button>
-                                                             <button class="btn btn-success btn-sm" ng-click="setModel(row)" data-toggle="modal" data-target="#updateCaseType">Change Case Type</button>
-                                                               <button class="btn btn-success btn-sm" ng-click="searchreport(row.fd_id)">Office Reports</button>
-                                                            <button class="btn btn-success btn-sm" ng-click="viewCaseFile(row.fd_id)">View</button>
+                                                             <button class="btn-ui btn-purple-ui" ng-click="setModel(row)" data-toggle="modal" data-target="#updateCaseType">Change Case Type</button>
+                                                               <button class="btn-ui btn-info-ui" ng-click="searchreport(row.fd_id)">Office Reports</button>
+                                                            <button class="btn-ui btn-primary-ui" ng-click="viewCaseFile(row.fd_id)">View</button>
                                                             <% }%>
                                                             <% if(role.equals("Stamp_Reporter") || role.equals("REGISTRAR") || role.equals("REGISTRAR (J)") || role.equals("JOINT REGISTRAR") || role.equals("JOINT REGISTRAR (J)")) {%>
-                                                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" ng-click="setModel(row)" data-target="#uploadDocument">Upload
+                                                            <button type="button" class="btn-ui btn-primary-ui" data-toggle="modal" ng-click="setModel(row)" data-target="#uploadDocument">Upload
                                                             </button>
-                                                                    <button class="btn btn-success btn-sm" ng-click="viewCaseFile(row.fd_id)">View</button>
+                                                                    <button class="btn-ui btn-purple-ui" ng-click="viewCaseFile(row.fd_id)">View</button>
                                                                     <% }%>
 
                                                                 <% if(role.equals("PS")) {%>
-                                                                    <button class="btn btn-success btn-sm" ng-click="viewCaseFile(row.fd_id)">View</button>
+                                                                    <button class="btn-ui btn-purple-ui" ng-click="viewCaseFile(row.fd_id)">View</button>
                                                                     <% }%>
 
                                                                         <% if(role.equals("Judge")) {%>
-                                                                            <button class="btn btn-success btn-sm" ng-click="viewCaseFile(row.fd_id)">View</button>
+                                                                            <button class="btn-ui btn-purple-ui" ng-click="viewCaseFile(row.fd_id)">View</button>
 
                                                                             <% }%>
 

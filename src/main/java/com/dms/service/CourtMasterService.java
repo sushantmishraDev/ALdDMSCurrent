@@ -155,6 +155,21 @@ public class CourtMasterService
 	}
 	
 	@Transactional
+	public JudgeName getJudgeNameByCourtMappingUmid(Long umid) {
+		JudgeName jg=null;
+		try {
+			Query query  =  em.createQuery("select j from JudgeName j where j.jn_jo_code  in  ("
+					+ " (select cm_jo_code from CourtMaster c WHERE c.cm_id= (select cum_court_mid  from CourtUserMapping where cum_user_mid =:userId)))");
+			query.setParameter("userId", umid);
+			jg= (JudgeName) query.getSingleResult();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jg;
+	}
+	
+	@Transactional
 	public List<JudgeName> getJudgeByECourtMappingUmid(Integer umid) {
 		List<JudgeName> jg=null;
 		

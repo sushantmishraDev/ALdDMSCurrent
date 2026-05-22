@@ -119,6 +119,9 @@ public class CauseList {
 
 	@Transient
 	private boolean caseChecked;
+	
+	 @Transient
+	private String listTypeName;
 
 	@Transient
 	private Date listing_date;
@@ -243,7 +246,14 @@ public class CauseList {
 	
 	
 	
-	
+
+	public String getListTypeName() {
+		return listTypeName;
+	}
+
+	public void setListTypeName(String listTypeName) {
+		this.listTypeName = listTypeName;
+	}
 
 	public String getCl_islcr() {
 		return cl_islcr;

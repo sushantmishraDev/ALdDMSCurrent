@@ -148,6 +148,8 @@ $scope.approveUser =function(data){
         });
     };
     
+    
+    
     $scope.user_create = function(masterentity) {
     	console.log(masterentity);
     	

@@ -214,7 +214,7 @@ $(document).ready(function(){
                                        
                                             <div class="col-md-8" id="myDiv">
                                              <link href="${pageContext.request.contextPath}/assets/css/custom.css" rel="stylesheet" />	
-                                                <jsp:include page="viewer.jsp"></jsp:include>
+                                                <jsp:include page="viewer2.jsp"></jsp:include>
                                             </div>
 
                                             <%} %>
@@ -232,7 +232,7 @@ $(document).ready(function(){
                                                 		|| role.equals("REGISTRAR") || role.equals("Assistant Review Officer") || role.equals("Bench Secretary") || role.equals("CaueList_Uploader") || role.equals("Stamp_Reporter")   )   {%>
                                                     <div class="col-md-8" id="myDiv">
                                                       <link href="${pageContext.request.contextPath}/assets/css/custom.css" rel="stylesheet" />	
-                                                        <jsp:include page="viewer1.jsp"></jsp:include>
+                                                        <jsp:include page="viewer2.jsp"></jsp:include>
                                                     </div>
                                                     <%} %>
 

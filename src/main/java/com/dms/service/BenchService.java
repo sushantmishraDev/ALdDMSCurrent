@@ -17,9 +17,12 @@ import com.dms.model.ApplicationWithPetition;
 import com.dms.model.CaseFileDetail;
 import com.dms.model.CaseType;
 import com.dms.model.CauseList;
+import com.dms.model.CauseListNew;
 import com.dms.model.CauseListType;
 import com.dms.model.CourtMaster;
 import com.dms.model.DMSJudge_mapping;
+import com.dms.model.SameCrimDetails;
+import com.dms.model.SameLcrDetails;
 
 @Service
 public class BenchService {
@@ -49,7 +52,7 @@ public class BenchService {
 		try {
 			/*Query query  =  em2.createQuery("SELECT cm from CauseListType cm where cm.clt_id not in (1,5,7,2,27,28,29,30,31,32,33,34,36)");
 			*/
-			Query query  =  em.createQuery("SELECT cm from CauseListType cm where cm.clt_id  in (21,23)  ");
+			Query query  =  em.createQuery("SELECT cm from CauseListType cm where cm.clt_id  in (2)  ");
 			
 			/*Query query  =  em2.createQuery("SELECT cm from CauseListType cm where cm.clt_description ilike '"+"%Transferred%"+"'");
 			*/courtmaster= (List<CauseListType>) query.getResultList();
@@ -78,6 +81,25 @@ public class BenchService {
 	boolean result=false;
 		try {
 			Query query  =  em.createQuery("DELETE  from CauseList c WHERE c.cl_dol ='"+date+"' and c.cl_list_type_mid =:clt "
+					+ " and c.cl_court_no=:cl_court_no and c.cl_rec_status !=3").setParameter("cl_court_no",cl_court_no).setParameter("clt",clt);
+			query.executeUpdate();
+			result=true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+
+        return result;
+}
+	
+	@Transactional
+	public boolean deleteCltypeNew(String date, Integer cl_court_no,Long clt) {
+		// TODO Auto-generated method stub
+		
+	boolean result=false;
+		try {
+			Query query  =  em.createQuery("DELETE  from CauseListNew c WHERE c.cl_dol ='"+date+"' and c.cl_list_type_mid =:clt"
 					+ " and c.cl_court_no=:cl_court_no and c.cl_rec_status !=3").setParameter("cl_court_no",cl_court_no).setParameter("clt",clt);
 			query.executeUpdate();
 			result=true;
@@ -161,6 +183,18 @@ public class BenchService {
 			    	return causeList;
 			    }
 			
+			@Transactional
+			 public CaseFileDetail save(CaseFileDetail cl) {
+				    
+				CaseFileDetail causeList = null;
+			    	try {	
+			    		causeList= em.merge(cl);	    	
+				    }catch (Exception e) {		
+				    	e.printStackTrace();	    	
+					}
+			    	return causeList;
+			    }
+			
 			
 			@Transactional
 			public CaseType getCaseTypeFromLabel(String ct_label) {
@@ -192,6 +226,18 @@ public class BenchService {
 			    }
 			
 			@Transactional
+			 public CauseListNew save(CauseListNew cl) {
+				    
+				CauseListNew causeList = null;
+			    	try {	
+			    		causeList= em.merge(cl);	    	
+				    }catch (Exception e) {		
+				    	e.printStackTrace();	    	
+					}
+			    	return causeList;
+			    }
+			
+			@Transactional
 			public CaseFileDetail getCaseFile(CaseFileDetail casefile) {
 				// TODO Auto-generated method stub
 				CaseFileDetail result = null;
@@ -206,6 +252,31 @@ public class BenchService {
 
 				return result;
 			}
+			
+			
+			@Transactional
+			 public SameCrimDetails save(SameCrimDetails cl) {
+				    
+				SameCrimDetails causeList = null;
+			    	try {	
+			    		causeList= em.merge(cl);	    	
+				    }catch (Exception e) {		
+				    	e.printStackTrace();	    	
+					}
+			    	return causeList;
+			    }
+			
+			@Transactional
+			 public SameLcrDetails save(SameLcrDetails cl) {
+				    
+				SameLcrDetails causeList = null;
+			    	try {	
+			    		causeList= em.merge(cl);	    	
+				    }catch (Exception e) {		
+				    	e.printStackTrace();	    	
+					}
+			    	return causeList;
+			    }
 			
 			public List<CourtMaster> getCourtMasterLists() {
 				
@@ -265,9 +336,9 @@ public List<CauseListType> getCuaselistTypetrans(String clt_ccms_list) {
 	//clt_ccms_list="1026";
 	
 	try {
-		/*Query query  =  em.createQuery("SELECT cm from CauseListType cm where cm.clt_ccms_list in ("+clt_ccms_list+") ");*/
+		Query query  =  em.createQuery("SELECT cm from CauseListType cm where cm.clt_ccms_list in ("+clt_ccms_list+") ");
 		
-		Query query  =  em.createQuery("SELECT cm from CauseListType cm where cm.clt_id in(26,27,28,29,30,31,32,33,34,36,38,39,40,3,1,5)");
+		/*Query query  =  em.createQuery("SELECT cm from CauseListType cm where cm.clt_id in(26,27,28,29,30,31,32,33,34,36,38,39,40,3,1,5)");*/
 		
 		/*Query query  =  em2.createQuery("SELECT cm from CauseListType cm where cm.clt_id  in (1,5,7)   ");*/
 		
@@ -280,6 +351,25 @@ public List<CauseListType> getCuaselistTypetrans(String clt_ccms_list) {
 	return courtmaster;
 }
 
+
+public List<CauseListType> getNextCauseList(String clt_ccms_list) {
+	
+	List<CauseListType> courtmaster=null; 
+	
+	
+	try {
+		Query query  =  em.createQuery("SELECT cm from CauseListType cm where cm.clt_ccms_list in ("+clt_ccms_list+") ");
+		
+		/*Query query  =  em2.createQuery("SELECT cm from CauseListType cm where cm.clt_id  in (1,5,7)   ");*/
+		
+		/*Query query  =  em2.createQuery("SELECT cm from CauseListType cm where cm.clt_description ilike '"+"%Transferred%"+"'");
+		*/courtmaster= (List<CauseListType>) query.getResultList();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return courtmaster;
+}
 
 public List<CauseListType> getCuaselistTypeSupp3(String clt_ccms_list) {
 	

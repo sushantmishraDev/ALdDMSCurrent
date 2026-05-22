@@ -62,6 +62,7 @@
 									<th style="text-align: center">Case Type</th>
 									<th style="text-align: center">Case No</th>
 									<th style="text-align: center">Case Year</th>
+									<th style="text-align: center">Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -77,6 +78,8 @@
 									<td>{{data[6]}}</td>
 
 									<td>{{data[7]}}</td>
+									
+									<td><button class="btn btn-success btn-sm" ng-click="viewCaseFile2(data[0])">View</button></td>
 
 								</tr>
 								<tr ng-if="ccmstodmsdata.length==0 && search">

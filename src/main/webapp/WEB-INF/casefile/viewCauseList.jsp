@@ -217,19 +217,22 @@ $(document).ready(function(){
          <span ng-show ="!nFlag" >Last</span></h4> -->
          
          
-         <h4 class="panel-title" style="font-size: 5mm;     font-weight: bold;">{{casefile.caseType.ct_label}}  No.&nbsp{{casefile.fd_case_no}}&nbsp of &nbsp{{casefile.fd_case_year}} <span>
+         <h4 class="panel-title" style="font-size: 4mm;     font-weight: bold;">{{casefile.caseType.ct_label}}  No.&nbsp{{casefile.fd_case_no}}&nbsp of &nbsp{{casefile.fd_case_year}} <span ng-show ="nFlag || pFlag">
        <button ng-show ="pFlag" type="button" ng-click="getPreviousCase('P')" class="priviousButton" ></button>
      <!--    <span ng-show ="!pFlag"  >First</span> -->
        <!--   <span style ="color :red" >{{cl_serial_noCurrent}}</span> -->
-        
-       <button ng-show ="nFlag"  type="button" class="nextButton"  ng-click="getNextCase('N')"></button>
-        <select style="width: 30%;" class="form-control" id="serial"
+       
+       <select style="width: 30%;" class="form-control" id="serial" 
 							ng-model="cl_serial_noCurrent1" name="serial"
-							ng-options="n for n in allSerial"
+							
 							 ng-change="changeSerial()"
 							select2="">
 							<option>Select Serial Number</option>
+							<option ng-repeat=" cl_serial_noCurrent1 in allSerial">{{cl_serial_noCurrent1}}</option>
 						</select>
+        
+       <button ng-show ="nFlag"  type="button" class="nextButton"  ng-click="getNextCase('N')"></button>
+        
         </span>
        <span>
       
@@ -469,7 +472,7 @@ $(document).ready(function(){
                     </div>
 
                     </body>
-                    <script type="text/javascript" src="${pageContext.request.contextPath}/js/scripts/controllers/CaseFileViewControllerForCauseList.js?v=9"></script>
+                    <script type="text/javascript" src="${pageContext.request.contextPath}/js/scripts/controllers/CaseFileViewControllerForCauseList.js?v=13"></script>
                     <script src="${pageContext.request.contextPath}/assets/js/apps.min.js"></script>
 
                     <script type="text/javascript" src="${pageContext.request.contextPath}/js/Smart-Table-master/dist/smart-table.js"></script>

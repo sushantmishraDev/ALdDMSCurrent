@@ -48,6 +48,40 @@ public class CourtMaster {
 	@Column(name = "cm_judges_name")
 	private String cm_judges_name;
 	
+	@Column(name = "cm_jo_code")
+	private String cm_jo_code;
+	
+	private transient Date clDate;
+	
+	private transient Long clListType;
+	
+	
+	
+	
+	public String getCm_jo_code() {
+		return cm_jo_code;
+	}
+
+	public void setCm_jo_code(String cm_jo_code) {
+		this.cm_jo_code = cm_jo_code;
+	}
+
+	public Long getClListType() {
+		return clListType;
+	}
+
+	public void setClListType(Long clListType) {
+		this.clListType = clListType;
+	}
+
+	public Date getClDate() {
+		return clDate;
+	}
+
+	public void setClDate(Date clDate) {
+		this.clDate = clDate;
+	}
+
 	public String getCm_judges_name() {
 		return cm_judges_name;
 	}

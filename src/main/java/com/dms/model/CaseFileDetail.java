@@ -261,24 +261,24 @@ public class CaseFileDetail{
     @JoinColumn(name = "fd_case_type",insertable = false, updatable = false)
 	private CaseType caseType;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name = "pt_fd_mid")
 	@Where(clause="pt_rec_status=1")
 	@OrderBy("pt_sequence ASC")
 	private List<Petitioner> petitioners;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name = "rt_fd_mid")
 	@Where(clause="rt_rec_status=1")
 	@OrderBy("rt_sequence ASC")
 	private List<Respondent> respondents;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name = "pc_fd_mid")
 	@Where(clause="pc_rec_status=1")
 	private List<PetitionerCounsel> pCounsels;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name = "rc_fd_mid")
 	@Where(clause="rc_rec_status=1")
 	private List<RespondentCounsel> rCounsels;
@@ -286,10 +286,10 @@ public class CaseFileDetail{
 	
 
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	/*@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "sd_fd_mid")
 	@Where(clause="sd_rec_status=1")
-	private List<SubDocument> subDocument;
+	private List<SubDocument> subDocument;*/
 	
 	/*@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name = "io_fd_mid")
@@ -601,14 +601,14 @@ public class CaseFileDetail{
 		this.cl_dol = cl_dol;
 	}
 
-	public List<SubDocument> getSubDocument() {
+/*	public List<SubDocument> getSubDocument() {
 		return subDocument;
 	}
 
 	public void setSubDocument(List<SubDocument> subDocument) {
 		this.subDocument = subDocument;
 	}
-
+*/
 	public Long getFd_assign_to() {
 		return fd_assign_to;
 	}
@@ -631,7 +631,7 @@ public class CaseFileDetail{
 				+ ", cl_to_judge=" + cl_to_judge + ", notificationCount=" + notificationCount
 				+ ", efilingApplicationList=" + efilingApplicationList + ", caseType=" + caseType + ", petitioners="
 				+ petitioners + ", respondents=" + respondents + ", pCounsels=" + pCounsels + ", rCounsels=" + rCounsels
-				+ ", subDocument=" + subDocument + ", caseNominated=" + caseNominated + ", case_type=" + case_type
+				+ ", caseNominated=" + caseNominated + ", case_type=" + case_type
 				+ ", judgement_date=" + judgement_date + ", bench_code=" + bench_code + ", judgement_id=" + judgement_id
 				+ ", first_petitioner=" + first_petitioner + ", first_respondent=" + first_respondent + "]";
 	}

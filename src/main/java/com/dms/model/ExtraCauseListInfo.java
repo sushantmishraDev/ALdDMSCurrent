@@ -25,6 +25,8 @@ public class ExtraCauseListInfo {
 	String CrimeYear;
 	@JsonProperty("CrimeDistName")
 	String CrimeDistName;
+	@JsonProperty("CauseListTypeId")
+	String CauseListTypeId;
 	@JsonProperty("CrimePoliceStnName")
 	String CrimePoliceStnName;
 	@JsonProperty("IsCrime")
@@ -33,16 +35,6 @@ public class ExtraCauseListInfo {
 	String ShortOrderName;
 	@JsonProperty("PS_Code")
 	String PS_Code;
-	
-	
-	
-	public String getPS_Code() {
-		return PS_Code;
-	}
-
-	public void setPS_Code(String pS_Code) {
-		PS_Code = pS_Code;
-	}
 
 	@JsonProperty("LastListingDate")
 	String LastListingDate;
@@ -56,12 +48,66 @@ public class ExtraCauseListInfo {
 	@JsonProperty("LowerCourtLCRNo")
 	String LowerCourtLCRNo;
 	
+	@JsonProperty("LowerCourtCaseBelongsValue")
+	String LowerCourtCaseBelongsValue;
+	
 	@JsonProperty("LowerCourtLCRYear")
 	String LowerCourtLCRYear;
 	
 	@JsonProperty("CaseDetailsOfSameCrimeNoList")
 	List<SameCrimeCcms> CaseDetailsOfSameCrimeNoList;
 	
+	@JsonProperty("CaseDetailsOfSameLCRNoList")
+	List<SameLCRccms> CaseDetailsOfSameLCRNoList;
+	
+	
+	
+	@JsonProperty("LcaseTypeName")
+	String LcaseTypeName;
+	
+	
+	
+	
+	public List<SameLCRccms> getCaseDetailsOfSameLCRNoList() {
+		return CaseDetailsOfSameLCRNoList;
+	}
+
+	public void setCaseDetailsOfSameLCRNoList(List<SameLCRccms> caseDetailsOfSameLCRNoList) {
+		CaseDetailsOfSameLCRNoList = caseDetailsOfSameLCRNoList;
+	}
+
+	public String getCauseListTypeId() {
+		return CauseListTypeId;
+	}
+
+	public void setCauseListTypeId(String causeListTypeId) {
+		CauseListTypeId = causeListTypeId;
+	}
+
+	public String getLcaseTypeName() {
+		return LcaseTypeName;
+	}
+
+	public void setLcaseTypeName(String lcaseTypeName) {
+		LcaseTypeName = lcaseTypeName;
+	}
+
+	public String getLowerCourtCaseBelongsValue() {
+		return LowerCourtCaseBelongsValue;
+	}
+
+	public void setLowerCourtCaseBelongsValue(String lowerCourtCaseBelongsValue) {
+		LowerCourtCaseBelongsValue = lowerCourtCaseBelongsValue;
+	}
+
+	public String getPS_Code() {
+		return PS_Code;
+	}
+
+	public void setPS_Code(String pS_Code) {
+		PS_Code = pS_Code;
+	}
+
 	
 
 	public String getLowerCourtLCRNo() {
@@ -185,4 +231,3 @@ public class ExtraCauseListInfo {
 	}
 
 }
-

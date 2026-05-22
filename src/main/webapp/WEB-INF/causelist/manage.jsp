@@ -16,7 +16,7 @@
 %>			
 							<td width="25%" >
 								<div class="input-group" >
-									<select ng-options="c.clt_id as (c.clt_description+' ('+c.clt_name+')') for c in causeListTypes | orderBy:'clt_id' "
+									<select  ng-options="c.clt_id as (c.clt_description+' ('+c.clt_name+')') for c in causeListTypes | orderBy:'clt_id' "
 										class="form-control" ng-model="model.cl_list_type_mid" select2=""><option value="">Select List Type</option></select>
 								</div>	
 							</td>

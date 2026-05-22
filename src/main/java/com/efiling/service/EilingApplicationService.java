@@ -52,6 +52,7 @@ public class EilingApplicationService
 	
 	@Transactional
 	public List<ApplicationCheckListMapping> getApplicationCheckList(Long ap_id) {
+		
 		// TODO Auto-generated method stub
 		List<ApplicationCheckListMapping> result=null;
 		Query query=null;

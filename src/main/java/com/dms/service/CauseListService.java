@@ -57,6 +57,18 @@ public class CauseListService
 	}
 	
 	@Transactional
+	public List<CauseListType> getCauseListTypesTrans() {
+		List<CauseListType> result = em.createQuery("SELECT c FROM CauseListType c where c.clt_description like '%Trans%'").getResultList();
+		return result;
+	}
+	
+	@Transactional
+	public List<CauseListType> getCauseListTypesSupp() {
+		List<CauseListType> result = em.createQuery("SELECT c FROM CauseListType c where c.clt_description not like '%Trans%' and c.clt_id not in(1,2,3,5)").getResultList();
+		return result;
+	}
+	
+	@Transactional
 	public CauseListType getCauseListTypesById(Long id) {
 		
 		
@@ -218,6 +230,8 @@ public class CauseListService
 		return list;
 	}
 	
+	
+	
 	@Transactional
 	public Object getListReportCourtWise(CauseList causeList) {
 		// TODO Auto-generated method stub
@@ -363,9 +377,44 @@ public class CauseListService
     	return causeList;
     }
 	
+	@Transactional
+	public List<Object> getListByType(CauseList causeList) throws ParseException {
+
+	    List<Object> list = new ArrayList<>();
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+	    String cl_dol = formatter.format(causeList.getCl_dol() != null ? causeList.getCl_dol() : new Date());
+  
+	    String querystr = "";
+
+	    if(causeList.getCl_court_no() != null) {
+	        querystr += " AND c.cl_court_no = " + causeList.getCl_court_no();
+	    }
+
+	    try {
+	        Query query = em.createNativeQuery(
+	                "SELECT COUNT(DISTINCT c.cl_serial_no) AS total_count, " +
+	                "       c.cl_list_type_mid, " +
+	                "       t.clt_description,t.clt_id " +
+	                "FROM cause_list c " +
+	                "JOIN cause_list_type t ON c.cl_list_type_mid = t.clt_id " +
+	                "WHERE c.cl_dol = '" + cl_dol + "' " +
+	                querystr + " AND c.cl_rec_status = 1 " +
+	                "GROUP BY c.cl_list_type_mid, t.clt_description,t.clt_id " +
+	                "ORDER BY t.clt_list_priority"
+	        );
+
+	        list = query.getResultList();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
+	
 	
 	@Transactional
-	public List getListByType(CauseList causeList) throws ParseException {
+	public List getListByType_old(CauseList causeList) throws ParseException {
 		// TODO Auto-generated method stub
 		List<Object> list = new  ArrayList<Object>();
 		String querystr="";
@@ -596,6 +645,8 @@ public class CauseListService
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date cl_dol1;
 		String date2=null;
+		Date date = new Date();
+		String currentDate = formatter.format(date);
 		try {
 			cl_dol1 = formatter.parse(cl_dol);
 			 date2=formatter.format(cl_dol1);
@@ -613,7 +664,7 @@ public class CauseListService
 			Query query  =  em.createNativeQuery("select Distinct cl_fd_mid,(cl_court_no-2),cl_serial_no,cl_first_petitioner,pt_name,\r\n" + 
 					"(select ct_label from case_types  where ct_id=cl_case_type_mid),cl_case_no,cl_case_year from cause_list,petitioner_details where  cl_fd_mid =pt_fd_mid\r\n" + 
 					"and cl_first_petitioner not ilike '%' ||SPLIT_PART(pt_name, ' ', 1)||'%'  and pt_sequence=1 and cl_dol='"+date2 +"'  and cl_fd_mid  in(\r\n" + 
-							"select fd_id from case_file_details  where trim(fd_file_source)='"+fd_file_source+"' and case_file_details.fd_cl_flag ='false'  ) \r\n" + 
+							"select fd_id from case_file_details  where trim(fd_file_source)='"+fd_file_source+"' ) \r\n" + 
 							"order by cl_court_no ");
 			
 						
@@ -1092,6 +1143,29 @@ public class CauseListService
 		return co;
 	}
 
+	
+	//================================================
+	@Transactional
+	public CauseList getPartyNameById(Long fdId) {
+
+	    List<CauseList> list = em.createQuery(
+	            "SELECT cl FROM CauseList cl WHERE cl.cl_fd_mid = :fdId",
+	            CauseList.class)
+	        .setParameter("fdId", fdId)
+	        .getResultList();
+
+	    System.out.println("SIZE WITHOUT STATUS = " + list.size());
+
+	    List<CauseList> list2 = em.createQuery(
+	            "SELECT cl FROM CauseList cl WHERE cl.cl_fd_mid = :fdId AND cl.cl_rec_status = 1",
+	            CauseList.class)
+	        .setParameter("fdId", fdId)
+	        .getResultList();
+
+	    System.out.println("SIZE WITH STATUS = " + list2.size());
+
+	    return list2.isEmpty() ? null : list2.get(0);
+	}
 
 
 	

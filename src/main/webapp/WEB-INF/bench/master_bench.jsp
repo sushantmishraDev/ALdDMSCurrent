@@ -27,7 +27,7 @@
 	
 	<div class="col-md-6">
 		<div class="form-group">
-				<label class="col-md-4  control-label" for="um_vendor_id">Status <span class="star">*</span></label>
+				<label class="col-md-4  control-label" for="um_vendor_id">CauseList Date <span class="star">*</span></label>
 			    <div class="col-md-7">
 		      		<input type="radio" required  name="Active" value="1"
 											ng-model="court.cm_rec_status" /> Ecourt 

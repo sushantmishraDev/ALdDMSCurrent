@@ -95,7 +95,7 @@
 					<div class="col-md-7">
 						<select id="court_id" ng-model="masterentity.court_id"
 							class="form-control" id="court_id" required name="court_id"
-							ng-options="court.cm_id as court.cm_name for court in courtsData"></select>
+							ng-options="court.cm_id as court.cm_name for court in courtsData | orderBy:'cm_id' "></select>
 					</div>
 				</div>
 			</div>

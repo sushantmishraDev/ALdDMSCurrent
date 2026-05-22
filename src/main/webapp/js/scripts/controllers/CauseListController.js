@@ -856,10 +856,9 @@ $scope.getCauseListPage =function (){
 		        // xhr.upload.addEventListener('abort', function(){console.log('abort complete')}, false);
 		      });
 		}  	  
-	/*$scope.viewCaseFile=function(data){
-		console.log("Cause List ",data);
-		  window.open(urlBase+"casefile/view/"+data.cl_fd_mid+'/'+data.cl_court_no+'/'+data.cl_rec_status+'/'+data.cl_serial_no'/'+data.cl_dol,"_blank");
-	  }*/
+	$scope.viewCaseFile2=function(data){
+		  window.open(urlBase+"casefile/view/"+data,"_blank");
+	  }
 	
 	
 	

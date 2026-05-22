@@ -1,4 +1,11 @@
 <jsp:include page="../content/header2.jsp"></jsp:include>
+
+<head>
+   <link rel='stylesheet' href='${pageContext.request.contextPath}/css/globalStyle.css' type='text/css' />
+
+</head>
+
+
 <div id="content" class="content">
 	<div class="container-fluid" ng-controller="UserMasterCtrl">
 
@@ -17,7 +24,7 @@
 				<div class="panel-body">
 				<div class="row">
 						<div class="col-md-12 ">
-							<button type="button" class="btn btn-primary btn-sm pull-right" ng-click="resetModel()" data-toggle="modal" data-target="#user_Modal">
+							<button type="button" class="btn-ui btn-purple-ui btn-sm pull-right" ng-click="resetModel()" data-toggle="modal" data-target="#user_Modal">
 								<span class="glyphicon glyphicon-plus-sign"></span> Create New User
 							</button>
 						</div>

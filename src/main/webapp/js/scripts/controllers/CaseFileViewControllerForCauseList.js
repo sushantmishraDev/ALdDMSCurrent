@@ -55,8 +55,8 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $sce, $http,$filter) {
 	
 	 $scope.case_type_label ;
 	
-	$scope.pFlag =true;
-	$scope.nFlag =true;
+	$scope.pFlag =false;
+	$scope.nFlag =false;
 	$scope.doc_id= $('#doc_id').val();
 	$scope.cl_court_no= $('#cl_court_no').val();
 	$scope.cl_rec_status= $('#cl_rec_status').val();
@@ -86,7 +86,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $sce, $http,$filter) {
 	$scope.cl_list_type_mid1= $('#cl_list_type_mid1').val();
 	$scope.cl_fd_mid1= $('#cl_fd_mid1').val();
 	$scope.cl_serial_noCurrent= $('#cl_serial_noCurrent').val();
-	$scope.cl_serial_noCurrent1= $('#cl_serial_noCurrent').val()-1;
+	$scope.cl_serial_noCurrent1= $('#cl_serial_noCurrent').val();
 	$scope.cl_ayr1= $('#cl_ayr1').val();
 	$scope.cl_ano1= $('#cl_ano1').val();
 	$scope.cl_dol= $('#cl_dol').val();
@@ -95,6 +95,8 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $sce, $http,$filter) {
 	
 	//$scope.allSerial= $('#allSerial').attributes;
 	
+	
+	console.log("dropdown serial :",$scope.cl_serial_noCurrent1," ",$('#cl_serial_noCurrent').val());
 	
 	
 	
@@ -114,6 +116,47 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $sce, $http,$filter) {
 	
 	
 	
+$scope.showMedReport=function(sd_id,$index,data){
+		
+		console.log("subDocument",data);
+		document.getElementById('outlineView').innerHTML = '';
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		$http.get(urlBase+'casefile/showMedReport/'+sd_id).success(function (data) {
+	    	$scope.sample=data.modelData;
+	    	DEFAULT_URL=urlBase+'uploads/' +data.modelData.document_name+".pdf";
+	    //	DEFAULT_URL="192.168.0.162:8080/elegalix_restapi/api/judgment/8042762";
+			console.log($scope.document_name);
+			PDFViewerApplication.open(DEFAULT_URL);
+			clearInterval(myVar1);
+			count =0;
+			console.log("ppppppppppppppppppppppp----------"+DEFAULT_URL);
+			myFunction();
+			//showBookMark();
+			
+			if(!myVar1){
+			
+				myVar1 =setInterval(booMarkShowFunction, 600);
+				}
+			else{
+			
+				myVar1 =setInterval(booMarkShowFunction, 600);
+			}
+	      }).
+	      error(function(data, status, headers, config) {
+	      	console.log("Error in getting sub documents");
+	      });
+
+	};
+	
+	
 	
 	$scope.viewCaseFile=function(id){
 		  window.open(urlBase+"casefile/view/"+id.cl_fd_mid,"_blank");
@@ -128,6 +171,7 @@ EDMSApp.controller("CaseFileCtrl",	function($scope, $sce, $http,$filter) {
 
 getSerials=function(){
 		$scope.allSerial=[];
+		console.log($scope.nFlag+" flags "+$scope.pFlag);
 		
 		var causeList ={};
 		
@@ -143,6 +187,7 @@ getSerials=function(){
 			
 			
 			$scope.allSerial=data.data;
+			console.log("all serail :",$scope.allSerial);
 			
 		}else{
 			
@@ -153,7 +198,65 @@ getSerials=function(){
 });	
 	}
 
+
 getSerials();
+
+
+getNextnPrevious=function(){
+	
+	var causeList ={};
+	causeList.cl_fd_mid =$scope.doc_id;
+		causeList.cl_court_no=$scope.cl_court_noCurrent;
+		causeList.cl_rec_status =$scope.cl_rec_statusCurrent;
+		causeList.cl_serial_no= $scope.cl_serial_noCurrent;
+		causeList.cl_dol =$scope.cl_dolCurrent;
+		causeList.cl_list_type_mid =$scope.cl_list_type_midCurrent;
+	
+	$http.post(urlBase+'casefile/getNextnPrevious',causeList)
+	.success(function(data) {
+		if(data.response=="TRUE"){
+			if(data.modelData!=null){
+				
+				$scope.nFlag=true;
+				$scope.clNext=data.modelData;
+				
+				$scope.cl_court_no= $scope.clNext.cl_court_no;
+				$scope.cl_rec_status= $scope.clNext.cl_rec_status;
+				$scope.cl_serial_no= $scope.clNext.cl_serial_no;
+				$scope.cl_list_type_mid= $scope.clNext.cl_list_type_mid;
+				$scope.cl_fd_mid= $scope.clNext.cl_fd_mid;
+				$scope.cl_ayr= $scope.clNext.cl_ayr;
+				$scope.cl_ano= $scope.clNext.cl_ano;
+				$scope.cl_dol= $scope.clNext.cl_dol;
+				
+			}
+			if(data.data!=null){
+				$scope.pFlag =true;
+				$scope.clPrev=data.data;
+				$scope.cl_court_no1= $scope.clPrev.cl_court_no;
+				$scope.cl_rec_status1= $scope.clPrev.cl_rec_status;
+				$scope.cl_serial_no1= $scope.clPrev.cl_serial_no;
+				$scope.cl_list_type_mid1= $scope.clPrev.cl_list_type_mid;
+				$scope.cl_fd_mid1= $scope.clPrev.cl_fd_mid;
+				$scope.cl_serial_noCurrent= $scope.clPrev.cl_serial_noCurrent;
+				//$scope.cl_serial_noCurrent1= $scope.clPrev.cl_serial_noCurrent;
+				$scope.cl_ayr1= $scope.clPrev.cl_ayr;
+				$scope.cl_ano1= $scope.clPrev.cl_ano;
+				$scope.cl_dol1= $scope.clPrev.cl_dol;
+			}
+			
+			
+		}else{
+			
+		}
+		
+}).error(function(data, status, headers, config) {
+	console.log("Error in adding causelist ");
+});	
+	
+}
+
+getNextnPrevious();
 
 
 	
@@ -270,6 +373,7 @@ getConnectedCases =function(){
 		var flag="N";
 		$scope.cl_fd_mid=9999999999;
 		$scope.cl_fd_mid1=9999999999;
+		$scope.cl_rec_status=1;
 		if($scope.cl_list_type_mid == 1 || $scope.cl_list_type_mid == 2 ){
 			  window.open(urlBase+'casefile/applicationviewCauseList/?cl_court_no='+$scope.cl_court_no+'&cl_rec_status='+$scope.cl_rec_status+'&cl_serial_no='+$scope.cl_serial_noCurrent1+'&cl_dol='+$scope.cl_dol+'&cl_list_type_mid='+$scope.cl_list_type_mid+'&app_no='+$scope.cl_ano+'&app_year='+$scope.cl_ayr+'&case_id='+9999999999,"_self");
 			

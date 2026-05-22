@@ -800,7 +800,7 @@ background: ;
 <div  ng-show="casefile.petitioners.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <!-- <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapsePetitioners">
+                  <!--  <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapsePetitioners">
 				    <i class="fa fa-plus-circle pull-right"></i> 
 					Petitioners
 					</a> -->
@@ -808,7 +808,8 @@ background: ;
 					Petitioners
                </h3>
            </div>
-           <div id="collapsePetitioners" class="panel-collapse collapse in">
+           <!-- <div id="collapsePetitioners" class="panel-collapse collapse in"> -->
+           <div id="collapsePetitioners" class="panel-default">
                <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="casefile.petitioners" class="table table-striped table-bordered">
@@ -840,7 +841,8 @@ background: ;
 					Respondents
                </h3>
            </div>
-           <div id="collapseRespondents" class="panel-collapse collapse in">
+          <!--  <div id="collapseRespondents" class="panel-collapse collapse in"> -->
+           <div id="collapseRespondents" class="panel-default">
                <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="casefile.respondents" class="table table-striped table-bordered">
@@ -873,7 +875,7 @@ background: ;
 					Petitioner Advocate(s)
                </h3>
            </div>
-           <div id="collapsePetAdv" class="panel-collapse collapse in">
+           <div id="collapsePetAdv" class="panel-default" >
                <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
@@ -904,7 +906,8 @@ background: ;
 					Respondent Advocate(s)
                </h3>
            </div>
-           <div id="collapseResAdv" class="panel-collapse collapse in">
+           <!-- <div id="collapseResAdv" class="panel-collapse collapse in"> -->
+             <div id="collapseResAdv" class="panel-default">
                <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" class="table table-striped table-bordered">
@@ -928,13 +931,13 @@ background: ;
 <div  ng-show="connectedCasesList.length > 0" class="panel panel-inverse overflow-hidden">
            <div class="panel-heading">
                <h3 class="panel-title">
-                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseRespondents">
+                   <a class="accordion-toggle accordion-toggle-styled" data-toggle="collapse" data-parent="#accordion" href="#collapseConnected">
 				    <i class="fa fa-plus-circle pull-right"></i> 
 					Connected Cases
 					</a>
                </h3>
            </div>
-           <div id="collapseRespondents" class="panel-collapse collapse in">
+           <div id="collapseConnected" class="panel-collapse collapse in">
                <div class="panel-body" style="padding:2px;max-height:450px;overflow:auto;">
                    <div class="table-responsive">
                        <table id="data-table" st-table="casefile.respondents" class="table table-striped table-bordered">

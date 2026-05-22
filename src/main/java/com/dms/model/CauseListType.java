@@ -44,6 +44,9 @@ public class CauseListType {
 	@Column(name = "clt_ccms_list")
 	private Integer clt_ccms_list;
 	
+	@Column(name = "clt_list_priority")
+	private Integer clt_list_priority;
+	
 	
 
 	public Integer getClt_ccms_list() {
@@ -52,6 +55,16 @@ public class CauseListType {
 
 	public void setClt_ccms_list(Integer clt_ccms_list) {
 		this.clt_ccms_list = clt_ccms_list;
+	}
+	
+	
+
+	public Integer getClt_list_priority() {
+		return clt_list_priority;
+	}
+
+	public void setClt_list_priority(Integer clt_list_priority) {
+		this.clt_list_priority = clt_list_priority;
 	}
 
 	public Long getClt_id() {

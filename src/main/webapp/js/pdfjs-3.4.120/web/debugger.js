@@ -571,7 +571,7 @@ const PDFBug = (function PDFBugClosure() {
       }
       this.selectPanel(0);
     },
-    loadCSS() {
+  /*  loadCSS() {
       const { url } = import.meta;
 
       const link = document.createElement("link");
@@ -579,7 +579,7 @@ const PDFBug = (function PDFBugClosure() {
       link.href = url.replace(/.js$/, ".css");
 
       document.head.append(link);
-    },
+    },*/
     cleanup() {
       for (const tool of this.tools) {
         if (tool.enabled) {
@@ -609,4 +609,4 @@ globalThis.FontInspector = FontInspector;
 globalThis.StepperManager = StepperManager;
 globalThis.Stats = Stats;
 
-export { PDFBug };
+/*export { PDFBug }*/;

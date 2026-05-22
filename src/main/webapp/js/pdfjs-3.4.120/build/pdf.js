@@ -3993,8 +3993,7 @@ class PageViewport {
     dontFlip = false
   }) {
     this.viewBox = viewBox;
-    /*this.scale = scale;*/
-    this.scale = "auto";
+    this.scale = scale;
     this.rotation = rotation;
     this.offsetX = offsetX;
     this.offsetY = offsetY;
@@ -10953,9 +10952,9 @@ class InkEditor extends _editor.AnnotationEditor {
   #realWidth = 0;
   #realHeight = 0;
   #requestFrameCallback = null;
-  static _defaultColor = null;
-  static _defaultOpacity = 1;
-  static _defaultThickness = 1;
+  static _defaultColor = "#b0e37d";
+  static _defaultOpacity = 0.5;
+  static _defaultThickness = 10;
   static _l10nPromise;
   static _type = "ink";
   constructor(params) {
@@ -10966,6 +10965,7 @@ class InkEditor extends _editor.AnnotationEditor {
     this.color = params.color || null;
     this.thickness = params.thickness || null;
     this.opacity = params.opacity || null;
+    console.log("uuuuu",this.color);
     this.paths = [];
     this.bezierPath2D = [];
     this.currentPath = [];

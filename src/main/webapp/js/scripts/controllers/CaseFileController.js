@@ -1,6 +1,10 @@
 var EDMSApp = angular.module("EDMSApp", ['ngFileUpload','ngMask','ui.bootstrap']);
 
-EDMSApp.controller('CaseFileController',['$scope','$http','$sce','Upload',function ($scope, $http,$sce,Upload) {
+//EDMSApp.controller('CaseFileController',['$scope','$http','$sce','Upload',function ($scope, $http,$sce,Upload) {
+	
+	EDMSApp.controller('CaseFileController',['$scope','$http','$sce','Upload','$q',function ($scope, $http,$sce,Upload,$q) {
+	
+	
 	  var urlBase="/dms/";
 	  $scope.picFile='';
 	  $scope.caseTypes=[];
@@ -1095,6 +1099,111 @@ $http.post(urlBase+'casefile/addCaseEfling',$scope.dmsCaseData);
 				});	
 				//}
 				};	
+				
+				
+				
+				//===========================================================================================================================================			
+							/*====================== Vijay Chaurasiya  Start from ) =========================*/
+				//========================================================================================================================================
+					
+							$scope.addPartyName = function(id) {
+
+							    console.log("FD ID:", id);
+
+							    var petReq = $http.get(urlBase + 'casefile/getpetitionerByFdId/' + id);
+							    var resReq = $http.get(urlBase + 'casefile/getrespondentByFdId/' + id);
+
+							    $q.all([petReq, resReq]).then(function(responses) {
+
+							        //  Assign objects safely
+							        $scope.petitionerObj = responses[0].data.data;
+							        $scope.respondentObj = responses[1].data.data;
+
+							        console.log("Petitioner Obj:", $scope.petitionerObj);
+							        console.log("Respondent Obj:", $scope.respondentObj);
+
+							        //  Safe existence check
+							        var hasPetitioner = $scope.petitionerObj && $scope.petitionerObj.pt_fd_mid;
+							        var hasRespondent = $scope.respondentObj && $scope.respondentObj.rt_fd_mid;
+
+							        //  If BOTH exist → DO NOTHING
+							        if (hasPetitioner && hasRespondent) {
+							            alert("Petitioner & Respondent already exist. No need to save.");
+							            return;
+							        }
+
+							        // ❗ If any missing → fetch from cause list
+							        console.log("Fetching from CauseList...");
+
+							        return $http.get(urlBase + 'causelist/getParty/' + id)
+							            .then(function(response) {
+
+							                if (response.data && response.data.data) {
+
+							                    var petName = response.data.data.cl_first_petitioner;
+							                    var resName = response.data.data.cl_first_respondent;
+
+							                    //  Assign for UI
+							                    $scope.petitioner = petName;
+							                    $scope.respondent = resName;
+
+							                    console.log("Final Petitioner:", petName);
+							                    console.log("Final Respondent:", resName);
+
+							                    //  Save only missing
+
+							                    if (!hasPetitioner) {
+
+							                        var payload1 = {
+							                            pt_fd_mid: id,
+							                            pt_name: petName,
+							                            pt_rec_status: 1
+							                        };
+
+							                        $http.post(urlBase + 'casefile/savepetitioner', payload1)
+							                            .then(function(res) {
+							                                console.log("Petitioner Saved:", res.data);
+															alert("Addedd Petitioner details Successfully!")
+							                            })
+							                            .catch(function(err) {
+							                                console.error("Petitioner Save Error:", err);
+							                            });
+							                    }
+
+							                    if (!hasRespondent) {
+
+							                        var payload2 = {
+							                            rt_fd_mid: id,
+							                            rt_name: resName,
+							                            rt_rec_status: 1
+							                        };
+
+							                        $http.post(urlBase + 'casefile/saverespondent', payload2)
+							                            .then(function(res) {
+							                                console.log("Respondent Saved:", res.data);
+							                            })
+							                            .catch(function(err) {
+							                                console.error("Respondent Save Error:", err);
+							                            });
+							                    }
+
+							                }
+							            });
+
+							    }).catch(function(error) {
+							        console.error("Error in APIs:", error);
+							    });
+							};
+							
+							/*====================== Vijay Chaurasiya  end ) =========================*/		
+					
+							
+				
+				
+				
+				
+				
+	
 				
 			
 	  //
